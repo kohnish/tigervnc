@@ -1,0 +1,10 @@
+diff --git a/meson.build b/meson.build
+index bfcbd1f94..a572c5876 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1,4 +1,4 @@
+-project('xserver', 'c',
++project('xserver', ['c', 'cpp'],
+         default_options: [
+             'buildtype=debugoptimized',
+             'c_std=gnu99',
