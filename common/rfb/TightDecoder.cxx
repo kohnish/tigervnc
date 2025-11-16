@@ -2,17 +2,17 @@
  * Copyright 2004-2005 Cendio AB.
  * Copyright 2009-2022 Pierre Ossman for Cendio AB
  * Copyright (C) 2011 D. R. Commander.  All Rights Reserved.
- *    
+ *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This software is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this software; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307,
@@ -60,9 +60,9 @@ bool TightDecoder::readRect(const core::Rect& r, rdr::InStream* is,
   if (readState == IDLE) {
     uint8_t comp_ctl;
 
-    if (r.width() > TIGHT_MAX_WIDTH)
-      throw protocol_error(core::format(
-        "TightDecoder: Too large rectangle (%d pixels)", r.width()));
+    // if (r.width() > TIGHT_MAX_WIDTH)
+    //   throw protocol_error(core::format(
+    //     "TightDecoder: Too large rectangle (%d pixels)", r.width()));
 
     if (!is->hasData(1))
       return false;
@@ -73,8 +73,8 @@ bool TightDecoder::readRect(const core::Rect& r, rdr::InStream* is,
     comp_ctl >>= 4;
 
     // Quit on unsupported compression type.
-    if (comp_ctl > tightMaxSubencoding)
-      throw protocol_error("TightDecoder: Bad subencoding value received");
+    // if (comp_ctl > tightMaxSubencoding)
+    //   throw protocol_error("TightDecoder: Bad subencoding value received");
 
     if (comp_ctl == tightFill)
       readState = FILL;
@@ -546,8 +546,8 @@ TightDecoder::FilterGradient24(const uint8_t *inbuf,
   int x, y, c;
   uint8_t prevRow[TIGHT_MAX_WIDTH*3];
   uint8_t thisRow[TIGHT_MAX_WIDTH*3];
-  uint8_t pix[3]; 
-  int est[3]; 
+  uint8_t pix[3];
+  int est[3];
 
   memset(prevRow, 0, sizeof(prevRow));
 
@@ -592,8 +592,8 @@ void TightDecoder::FilterGradient(const uint8_t* inbuf,
   int x, y, c;
   static uint8_t prevRow[TIGHT_MAX_WIDTH*3];
   static uint8_t thisRow[TIGHT_MAX_WIDTH*3];
-  uint8_t pix[3]; 
-  int est[3]; 
+  uint8_t pix[3];
+  int est[3];
 
   memset(prevRow, 0, sizeof(prevRow));
 
