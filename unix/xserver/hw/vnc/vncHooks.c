@@ -1,16 +1,16 @@
 /* Copyright (C) 2002-2005 RealVNC Ltd.  All Rights Reserved.
  * Copyright 2009-2024 Pierre Ossman for Cendio AB
- * 
+ *
  * This is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This software is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this software; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307,
@@ -127,11 +127,11 @@ static void vncHooksBlockHandler(ScreenPtr pScreen, void * pTimeout);
 static void vncHooksBlockHandler(ScreenPtr pScreen, void * pTimeout,
                                  void * pReadmask);
 #endif
-static void vncHooksComposite(CARD8 op, PicturePtr pSrc, PicturePtr pMask, 
-			      PicturePtr pDst, INT16 xSrc, INT16 ySrc, INT16 xMask, 
+static void vncHooksComposite(CARD8 op, PicturePtr pSrc, PicturePtr pMask,
+			      PicturePtr pDst, INT16 xSrc, INT16 ySrc, INT16 xMask,
 			      INT16 yMask, INT16 xDst, INT16 yDst, CARD16 width, CARD16 height);
-static void vncHooksGlyphs(CARD8 op, PicturePtr pSrc, PicturePtr pDst, 
-			      PictFormatPtr maskFormat, INT16 xSrc, INT16 ySrc, int nlists, 
+static void vncHooksGlyphs(CARD8 op, PicturePtr pSrc, PicturePtr pDst,
+			      PictFormatPtr maskFormat, INT16 xSrc, INT16 ySrc, int nlists,
 			      GlyphListPtr lists, GlyphPtr * glyphs);
 static void vncHooksCompositeRects(CARD8 op, PicturePtr pDst,
             xRenderColor * color, int nRect, xRectangle *rects);
@@ -326,10 +326,10 @@ int vncHooksInit(int scrIdx)
       wrap(vncHooksScreen, rp, rrCrtcSet, vncHooksRandRCrtcSet);
   }
 
-  miPointerPriv = dixLookupPrivate(&pScreen->devPrivates, miPointerScreenKey);
-  if (miPointerPriv) {
-    wrap(vncHooksScreen, miPointerPriv, spriteFuncs, &vncHooksSpriteFuncs);
-  }
+  /* miPointerPriv = dixLookupPrivate(&pScreen->devPrivates, miPointerScreenKey); */
+  /* if (miPointerPriv) { */
+  /*   wrap(vncHooksScreen, miPointerPriv, spriteFuncs, &vncHooksSpriteFuncs); */
+  /* } */
 
   return TRUE;
 }
@@ -649,7 +649,7 @@ static void vncHooksBlockHandler(ScreenPtr pScreen_, void * pTimeout,
 // Composite - The core of XRENDER
 
 static void vncHooksComposite(CARD8 op, PicturePtr pSrc, PicturePtr pMask,
-		       PicturePtr pDst, INT16 xSrc, INT16 ySrc, INT16 xMask, 
+		       PicturePtr pDst, INT16 xSrc, INT16 ySrc, INT16 xMask,
 		       INT16 yMask, INT16 xDst, INT16 yDst, CARD16 width, CARD16 height)
 {
   RegionRec changed;
@@ -755,7 +755,7 @@ GlyphsToRegion(ScreenPtr pScreen, int nlist, GlyphListPtr list, GlyphPtr *glyphs
 // Glyphs - Glyph specific version of Composite (caches and whatnot)
 
 static void vncHooksGlyphs(CARD8 op, PicturePtr pSrc, PicturePtr pDst,
-           PictFormatPtr maskFormat, INT16 xSrc, INT16 ySrc, int nlists, 
+           PictFormatPtr maskFormat, INT16 xSrc, INT16 ySrc, int nlists,
            GlyphListPtr lists, GlyphPtr * glyphs)
 {
   RegionPtr changed;
