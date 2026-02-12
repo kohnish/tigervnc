@@ -315,10 +315,10 @@ int vncHooksInit(int scrIdx)
       wrap(vncHooksScreen, rp, rrCrtcSet, vncHooksRandRCrtcSet);
   }
 
-  miPointerPriv = dixLookupPrivate(&pScreen->devPrivates, miPointerScreenKey);
-  if (miPointerPriv) {
-    wrap(vncHooksScreen, miPointerPriv, spriteFuncs, &vncHooksSpriteFuncs);
-  }
+  /* miPointerPriv = dixLookupPrivate(&pScreen->devPrivates, miPointerScreenKey); */
+  /* if (miPointerPriv) { */
+  /*   wrap(vncHooksScreen, miPointerPriv, spriteFuncs, &vncHooksSpriteFuncs); */
+  /* } */
 
   return TRUE;
 }
