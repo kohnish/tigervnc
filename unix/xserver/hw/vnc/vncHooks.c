@@ -56,6 +56,7 @@
 
 typedef struct _vncHooksScreenRec {
   int                          ignoreHooks;
+  PixmapPtr                    rootPixmap;
 
   CloseScreenProcPtr           CloseScreen;
   CreateGCProcPtr              CreateGC;
@@ -285,6 +286,7 @@ int vncHooksInit(int scrIdx)
   vncHooksScreen = vncHooksScreenPrivate(pScreen);
 
   vncHooksScreen->ignoreHooks = 0;
+  vncHooksScreen->rootPixmap = pScreen->GetWindowPixmap(pScreen->root);
 
   wrap(vncHooksScreen, pScreen, CloseScreen, vncHooksCloseScreen);
   wrap(vncHooksScreen, pScreen, CreateGC, vncHooksCreateGC);
@@ -602,12 +604,26 @@ static void vncHooksCursorWarpedTo(DeviceIntPtr pDev,
 static void vncHooksBlockHandler(ScreenPtr pScreen_, void * pTimeout)
 {
   SCREEN_PROLOGUE(pScreen_, BlockHandler);
+  PixmapPtr rootPixmap;
 
   vncHooksScreen->ignoreHooks++;
 
   (*pScreen->BlockHandler) (pScreen, pTimeout);
 
   vncHooksScreen->ignoreHooks--;
+
+  /*
+   * Present page flips replace the root window's pixmap without going through
+   * any of the drawing hooks above.  Treat that as a full-screen update so
+   * framebuffer clients also see fullscreen applications.
+   */
+  rootPixmap = pScreen->GetWindowPixmap(pScreen->root);
+  if (rootPixmap != vncHooksScreen->rootPixmap) {
+    BoxRec box = { 0, 0, pScreen->width, pScreen->height };
+
+    vncHooksScreen->rootPixmap = rootPixmap;
+    vncAddChanged(pScreen->myNum, 1, (const struct UpdateRect*)&box);
+  }
 
   SCREEN_EPILOGUE(BlockHandler);
 }
