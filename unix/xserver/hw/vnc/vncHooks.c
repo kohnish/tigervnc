@@ -286,7 +286,7 @@ int vncHooksInit(int scrIdx)
   vncHooksScreen = vncHooksScreenPrivate(pScreen);
 
   vncHooksScreen->ignoreHooks = 0;
-  vncHooksScreen->rootPixmap = pScreen->GetWindowPixmap(pScreen->root);
+  vncHooksScreen->rootPixmap = NULL;
 
   wrap(vncHooksScreen, pScreen, CloseScreen, vncHooksCloseScreen);
   wrap(vncHooksScreen, pScreen, CreateGC, vncHooksCreateGC);
@@ -618,12 +618,13 @@ static void vncHooksBlockHandler(ScreenPtr pScreen_, void * pTimeout)
    * framebuffer clients also see fullscreen applications.
    */
   rootPixmap = pScreen->GetWindowPixmap(pScreen->root);
-  if (rootPixmap != vncHooksScreen->rootPixmap) {
+  if (vncHooksScreen->rootPixmap != NULL &&
+      rootPixmap != vncHooksScreen->rootPixmap) {
     BoxRec box = { 0, 0, pScreen->width, pScreen->height };
 
-    vncHooksScreen->rootPixmap = rootPixmap;
     vncAddChanged(pScreen->myNum, 1, (const struct UpdateRect*)&box);
   }
+  vncHooksScreen->rootPixmap = rootPixmap;
 
   SCREEN_EPILOGUE(BlockHandler);
 }
